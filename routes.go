@@ -9,7 +9,7 @@ func (s *Server) routes() {
 	}
 	s.router.Handle("GET", "/about/", s.handleAbout())
 	s.router.Handle("GET", "/greet/*to", s.handleGreeting(name))
-	s.router.Use(s.handleStatic("./static", "/"))
+	s.router.Use(s.handleStatic("./static", "/", true))
 }
 
 /*
