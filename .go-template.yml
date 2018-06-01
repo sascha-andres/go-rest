@@ -1,7 +1,8 @@
 ---
 
 project:
-  name: "go rest service inspired by Mat Ryer"
+  name: "go-rest"
+  description: "rest service implemewntation inspired by Mat Ryer"
   author: "Sascha Andres"
   repository: "https://github.com/sascha-andres/go-rest"
   default-branch: "master"
