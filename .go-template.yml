@@ -5,5 +5,14 @@ project:
   author: "Sascha Andres"
   repository: "https://github.com/sascha-andres/go-rest"
   default-branch: "master"
-  
-explicit-templates: false
+
+transformation:
+  explicit-templates: false
+  excluded-files:
+    - ".go-template.yml"
+  templates:
+    - "test.go"
+  renames:
+    - from: "go-rest/"
+      to: "{{ .Name }}"
+      type: "directory"
