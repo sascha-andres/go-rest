@@ -19,4 +19,5 @@ This sample rest client has the following features pre-added:
 ||- wildcard route|
 ||- fixed route|
 ||- gops https://github.com/google/gops|
-||- prometheus metric at /metrics/|
+||- prometheus metric at /metrics|
+||- templates route|
