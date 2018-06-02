@@ -2,17 +2,25 @@
 
 project:
   name: "go-rest"
-  description: "rest service implemewntation inspired by Mat Ryer"
+  description: "rest service implementation inspired by Mat Ryer"
   author: "Sascha Andres"
   repository: "https://github.com/sascha-andres/go-rest"
 
 transformation:
-  explicit-templates: false
   excluded-files:
     - ".go-template.yml"
   templates:
     - "test.go"
   renames:
-    - from: "go-rest/"
+    - from: "go-rest"
       to: "{{ .Name }}"
       type: "directory"
+  replacements:
+    - from: "go_rest"
+      to: "{{ .Name }}"
+    - from: "github.com/sascha-andres/go-rest/go-rest/cmd"
+      to: "{{ .Namespace }}/{{ .Name }}/{{ .Name }}/cmd"
+    - from: "github.com/sascha-andres/go-rest"
+      to: "{{ .Namespace }}/{{ .Name }}"
+    - from: "go-rest"
+      to: "{{ .Name }}"
