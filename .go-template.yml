@@ -5,7 +5,6 @@ project:
   description: "rest service implemewntation inspired by Mat Ryer"
   author: "Sascha Andres"
   repository: "https://github.com/sascha-andres/go-rest"
-  default-branch: "master"
 
 transformation:
   explicit-templates: false
