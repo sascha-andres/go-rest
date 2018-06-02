@@ -9,18 +9,20 @@ project:
 transformation:
   excluded-files:
     - ".go-template.yml"
-  templates:
-    - "test.go"
   renames:
     - from: "go-rest"
       to: "{{ .Name }}"
-      type: "directory"
   replacements:
     - from: "go_rest"
       to: "{{ .Name }}"
     - from: "github.com/sascha-andres/go-rest/go-rest/cmd"
-      to: "{{ .Namespace }}/{{ .Name }}/{{ .Name }}/cmd"
+      to: "{{ index .Arguments \"Namespace\" }}/{{ .Name }}/{{ .Name }}/cmd"
     - from: "github.com/sascha-andres/go-rest"
-      to: "{{ .Namespace }}/{{ .Name }}"
+      to: "{{ index .Arguments \"Namespace\" }}/{{ .Name }}"
     - from: "go-rest"
       to: "{{ .Name }}"
+
+git: true
+
+arguments:
+  - Namespace
