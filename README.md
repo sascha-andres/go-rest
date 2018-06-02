@@ -15,6 +15,7 @@ This sample rest client has the following features pre-added:
 
 |Version|Description|
 |---|---|
+|0.1.1|add .go-template.yml|
 |0.1.0|- sample static pages|
 ||- wildcard route|
 ||- fixed route|
