@@ -32,7 +32,7 @@ var serveCmd = &cobra.Command{
 	Short: "run rest api service",
 	Long:  `Initializes and runs the rest api server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		srv, err := go_rest.NewServer(viper.GetString("serve.listen"), viper.GetInt("serve.port"))
+		srv, err := go_rest.NewServer(viper.GetString("serve.listen"), viper.GetInt("serve.port"), viper.GetBool("serve.metrics"))
 		if err != nil {
 			panic(err)
 		}
@@ -64,6 +64,7 @@ func init() {
 
 	serveCmd.PersistentFlags().StringP("listen", "l", "127.0.0.1", "ip binding, empty = listen on all")
 	serveCmd.PersistentFlags().IntP("port", "p", 10880, "port to listen on")
+	serveCmd.PersistentFlags().BoolP("metrics", "m", false, "expose metrics")
 
 	if err := viperBind(serveCmd, "listen"); err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "error binding listen flag: %s\n", err)
@@ -72,6 +73,11 @@ func init() {
 
 	if err := viperBind(serveCmd, "port"); err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "error binding port flag: %s\n", err)
+		os.Exit(1)
+	}
+
+	if err := viperBind(serveCmd, "metrics"); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "error binding metrics flag: %s\n", err)
 		os.Exit(1)
 	}
 }

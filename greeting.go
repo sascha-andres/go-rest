@@ -11,9 +11,9 @@ func (s *Server) handleGreeting(name string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		to := ctx.Param("to")
 		if to != "" {
-			ctx.Writer.WriteString(fmt.Sprintf("Hello from %s to %s", name, to))
+			_, _ = ctx.Writer.WriteString(fmt.Sprintf("Hello from %s to %s", name, to))
 		} else {
-			ctx.Writer.WriteString(fmt.Sprintf("Hello from %s", name))
+			_, _ = ctx.Writer.WriteString(fmt.Sprintf("Hello from %s", name))
 		}
 		ctx.Done()
 	}
