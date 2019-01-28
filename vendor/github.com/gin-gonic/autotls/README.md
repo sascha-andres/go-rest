@@ -1,6 +1,9 @@
 # autotls
 
-[![Build Status](https://travis-ci.org/gin-gonic/autotls.svg?branch=master)](https://travis-ci.org/gin-gonic/autotls)
+[![Build Status](https://travis-ci.org/gin-gonic/autotls.svg?branch=master)](https://travis-ci.org/gin-gonic/autotls) 
+[![Go Report Card](https://goreportcard.com/badge/github.com/gin-gonic/autotls)](https://goreportcard.com/report/github.com/gin-gonic/autotls)
+[![GoDoc](https://godoc.org/github.com/gin-gonic/autotls?status.svg)](https://godoc.org/github.com/gin-gonic/autotls)
+[![Join the chat at https://gitter.im/gin-gonic/autotls](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gin-gonic/autotls?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Support Let's Encrypt for a Go server application.
 
@@ -8,7 +11,7 @@ Support Let's Encrypt for a Go server application.
 
 example for 1-line LetsEncrypt HTTPS servers.
 
-[embedmd]:# (example/example1.go go)
+[embedmd]:# (example/example1/example1.go go)
 ```go
 package main
 
@@ -33,7 +36,7 @@ func main() {
 
 example for custom autocert manager.
 
-[embedmd]:# (example/example2.go go)
+[embedmd]:# (example/example2/example2.go go)
 ```go
 package main
 
@@ -59,6 +62,6 @@ func main() {
 		Cache:      autocert.DirCache("/var/www/.cache"),
 	}
 
-	log.Fatal(autotls.RunWithManager(r, m))
+	log.Fatal(autotls.RunWithManager(r, &m))
 }
 ```

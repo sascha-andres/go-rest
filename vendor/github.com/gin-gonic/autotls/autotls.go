@@ -13,12 +13,14 @@ func Run(r http.Handler, domain ...string) error {
 }
 
 // RunWithManager support custom autocert manager
-func RunWithManager(r http.Handler, m autocert.Manager) error {
+func RunWithManager(r http.Handler, m *autocert.Manager) error {
 	s := &http.Server{
 		Addr:      ":https",
 		TLSConfig: &tls.Config{GetCertificate: m.GetCertificate},
 		Handler:   r,
 	}
+
+	go http.ListenAndServe(":http", m.HTTPHandler(nil))
 
 	return s.ListenAndServeTLS("", "")
 }

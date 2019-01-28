@@ -6,15 +6,15 @@
 //
 // The following failing test:
 //
-// 	func Test(t *testing.T) {
-// 		is := is.New(t)
-// 		a, b := 1, 2
-// 		is.Equal(a, b) // expect to be the same
-// 	}
+//	func Test(t *testing.T) {
+//		is := is.New(t)
+//		a, b := 1, 2
+//		is.Equal(a, b) // expect to be the same
+//	}
 //
 // Will output:
 //
-// 		your_test.go:123: 1 != 2 // expect to be the same
+//		your_test.go:123: 1 != 2 // expect to be the same
 //
 // Usage
 //
@@ -33,7 +33,7 @@
 //		body := readBody(r)
 //		is.True(strings.Contains(body, "Hi there"))
 //
-// 	}
+//	}
 package is
 
 import (
@@ -71,12 +71,10 @@ type I struct {
 	colorful bool
 }
 
-var isColorful bool
+var noColorFlag bool
 
 func init() {
-	noColor := flag.Bool("nocolor", false, "turns off colors")
-	flag.Parse()
-	isColorful = !*noColor
+	flag.BoolVar(&noColorFlag, "nocolor", false, "turns off colors")
 }
 
 // New makes a new testing helper using the specified
@@ -84,7 +82,7 @@ func init() {
 // In strict mode, failures call T.FailNow causing the test
 // to be aborted. See NewRelaxed for alternative behavior.
 func New(t T) *I {
-	return &I{t, t.FailNow, os.Stdout, isColorful}
+	return &I{t, t.FailNow, os.Stdout, !noColorFlag}
 }
 
 // NewRelaxed makes a new testing helper using the specified
@@ -92,7 +90,7 @@ func New(t T) *I {
 // In relaxed mode, failures call T.Fail allowing
 // multiple failures per test.
 func NewRelaxed(t T) *I {
-	return &I{t, t.Fail, os.Stdout, isColorful}
+	return &I{t, t.Fail, os.Stdout, !noColorFlag}
 }
 
 func (is *I) log(args ...interface{}) {
@@ -107,9 +105,9 @@ func (is *I) logf(format string, args ...interface{}) {
 
 // Fail immediately fails the test.
 //
-// 	func Test(t *testing.T) {
+//	func Test(t *testing.T) {
 //		is := is.New(t)
-//      is.Fail() // TODO: write this test
+//		is.Fail() // TODO: write this test
 //	}
 //
 // In relaxed mode, execution will continue after a call to
@@ -121,7 +119,7 @@ func (is *I) Fail() {
 // True asserts that the expression is true. The expression
 // code itself will be reported if the assertion fails.
 //
-// 	func Test(t *testing.T) {
+//	func Test(t *testing.T) {
 //		is := is.New(t)
 //		val := method()
 //		is.True(val != nil) // val should never be nil
@@ -129,7 +127,7 @@ func (is *I) Fail() {
 //
 // Will output:
 //
-// 	your_test.go:123: not true: val != nil
+//	your_test.go:123: not true: val != nil
 func (is *I) True(expression bool) {
 	if !expression {
 		is.log("not true: $ARGS")
@@ -138,15 +136,15 @@ func (is *I) True(expression bool) {
 
 // Equal asserts that a and b are equal.
 //
-// 	func Test(t *testing.T) {
+//	func Test(t *testing.T) {
 //		is := is.New(t)
 //		a := greet("Mat")
 //		is.Equal(a, "Hi Mat") // greeting
-// 	}
+//	}
 //
 // Will output:
 //
-// 	your_test.go:123: Hey Mat != Hi Mat // greeting
+//	your_test.go:123: Hey Mat != Hi Mat // greeting
 func (is *I) Equal(a, b interface{}) {
 	if !areEqual(a, b) {
 		if isNil(a) || isNil(b) {
@@ -170,31 +168,31 @@ func (is *I) Equal(a, b interface{}) {
 }
 
 // New is a method wrapper around the New function.
-// It allows you to write subtests using a fimilar
+// It allows you to write subtests using a similar
 // pattern:
 //
-// 	func Test(t *testing.T) {
+//	func Test(t *testing.T) {
 //		is := is.New(t)
-// 		t.Run("sub", func(t *testing.T) {
-// 			is := is.New(t)
-// 			// TODO: test
-// 		})
-// 	}
+//		t.Run("sub", func(t *testing.T) {
+//			is := is.New(t)
+//			// TODO: test
+//		})
+//	}
 func (is *I) New(t *testing.T) *I {
 	return New(t)
 }
 
-// NewRelaxed is a method wrapper aorund the NewRelaxed
-// method. It allows you to write subtests using a fimilar
+// NewRelaxed is a method wrapper around the NewRelaxed
+// method. It allows you to write subtests using a similar
 // pattern:
 //
-// 	func Test(t *testing.T) {
-//		is := is.New(t)
-// 		t.Run("sub", func(t *testing.T) {
-// 			is := is.New(t)
-// 			// TODO: test
-// 		})
-// 	}
+//	func Test(t *testing.T) {
+//		is := is.NewRelaxed(t)
+//		t.Run("sub", func(t *testing.T) {
+//			is := is.NewRelaxed(t)
+//			// TODO: test
+//		})
+//	}
 func (is *I) NewRelaxed(t *testing.T) *I {
 	return NewRelaxed(t)
 }
@@ -208,16 +206,16 @@ func (is *I) valWithType(v interface{}) string {
 
 // NoErr asserts that err is nil.
 //
-// 	func Test(t *testing.T) {
+//	func Test(t *testing.T) {
 //		is := is.New(t)
 //		val, err := getVal()
 //		is.NoErr(err)        // getVal error
-//		is.OK(len(val) > 10) // val cannot be short
+//		is.True(len(val) > 10) // val cannot be short
 //	}
 //
 // Will output:
 //
-// 	your_test.go:123: err: not found // getVal error
+//	your_test.go:123: err: not found // getVal error
 func (is *I) NoErr(err error) {
 	if err != nil {
 		is.logf("err: %s", err.Error())
@@ -246,17 +244,14 @@ func areEqual(a, b interface{}) bool {
 		if !isNil(a) && isNil(b) {
 			return false
 		}
-		return a == b
+		return true
 	}
 	if reflect.DeepEqual(a, b) {
 		return true
 	}
 	aValue := reflect.ValueOf(a)
 	bValue := reflect.ValueOf(b)
-	if aValue == bValue {
-		return true
-	}
-	return false
+	return aValue == bValue
 }
 
 func callerinfo() (path string, line int, ok bool) {
@@ -318,7 +313,7 @@ func loadArguments(path string, line int) (string, bool) {
 			text = text[braceI+1:]
 			cs := bufio.NewScanner(strings.NewReader(text))
 			cs.Split(bufio.ScanBytes)
-			i := 0
+			j := 0
 			c := 1
 			for cs.Scan() {
 				switch cs.Text() {
@@ -330,9 +325,9 @@ func loadArguments(path string, line int) (string, bool) {
 				if c == 0 {
 					break
 				}
-				i++
+				j++
 			}
-			text = text[:i]
+			text = text[:j]
 			return text, true
 		}
 		i++
