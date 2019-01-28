@@ -20,6 +20,8 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/spf13/viper"
+
 	"github.com/sascha-andres/go-rest"
 	"github.com/spf13/cobra"
 )
@@ -30,7 +32,7 @@ var serveCmd = &cobra.Command{
 	Short: "run rest api service",
 	Long:  `Initializes and runs the rest api server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		srv, err := go_rest.NewServer("", 10880)
+		srv, err := go_rest.NewServer(viper.GetString("serve.listen"), viper.GetInt("serve.port"))
 		if err != nil {
 			panic(err)
 		}
@@ -59,4 +61,17 @@ var serveCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(serveCmd)
+
+	serveCmd.PersistentFlags().StringP("listen", "l", "127.0.0.1", "ip binding, empty = listen on all")
+	serveCmd.PersistentFlags().IntP("port", "p", 10880, "port to listen on")
+
+	if err := viperBind(serveCmd, "listen"); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "error binding listen flag: %s\n", err)
+		os.Exit(1)
+	}
+
+	if err := viperBind(serveCmd, "port"); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "error binding port flag: %s\n", err)
+		os.Exit(1)
+	}
 }
