@@ -16,15 +16,17 @@ type Server struct {
 }
 
 // NewServer creates ann instance of rest api server
-func NewServer(listen string, port int) (*Server, error) {
+func NewServer(listen string, port int, metrics bool) (*Server, error) {
 
 	r := gin.Default()
-	p := ginprom.New(
-		ginprom.Engine(r),
-		ginprom.Subsystem("gin"),
-		ginprom.Path("/metrics"),
-	)
-	r.Use(p.Instrument())
+	if metrics {
+		p := ginprom.New(
+			ginprom.Engine(r),
+			ginprom.Subsystem("gin"),
+			ginprom.Path("/metrics"),
+		)
+		r.Use(p.Instrument())
+	}
 
 	s := &Server{
 		router: r,
