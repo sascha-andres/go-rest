@@ -15,6 +15,7 @@ This sample rest client has the following features pre-added:
 
 |Version|Description|
 |---|---|
+|1.0.1|update dependencies|
 |1.0.0|switch to go modules|
 |0.2.0|make listen and port configurable by default|
 |0.1.1|add .go-template.yml|
