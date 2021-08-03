@@ -34,8 +34,6 @@ require (
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1
 	github.com/tidwall/gjson v1.2.1 // indirect
-	github.com/tidwall/match v1.0.1 // indirect
-	github.com/tidwall/pretty v0.0.0-20190325153808-1166b9ac2b65 // indirect
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/valyala/fasttemplate v1.0.1 // indirect
 	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
@@ -48,3 +46,7 @@ require (
 )
 
 replace github.com/ugorji/go v1.1.4 => github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43
+
+replace github.com/tidwall/gjson v1.2.1 => github.com/tidwall/gjson v1.6.5
+
+replace github.com/buger/jsonparser v0.0.0-20181115193947-bf1c66bbce23 => github.com/buger/jsonparser v1.0.0
