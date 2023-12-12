@@ -10,7 +10,7 @@ import (
 
 func TestHandleAbout(t *testing.T) {
 	is := is.New(t)
-	_, err := NewServer("localhost", 12345)
+	_, err := NewServer("localhost", 12345, true)
 	is.NoErr(err)
 	_, err = http.NewRequest("GET", "/about", nil)
 	is.NoErr(err)
